@@ -1,0 +1,22 @@
+/*
+*   All code owned by Ruchir Bapat, Copyright 2016, All Rights Reserved
+*   The code is licensed under: Apache 2.0
+*/
+
+#canvas {
+    position: absolute;
+    top:100px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+}
+
+h1 {
+    text-align: center;
+    margin-top: auto;
+    color:rgb(255, 108, 108);
+    font-family: "Montserrat";
+    font-size: 100px;
+    font-weight: lighter;
+}
