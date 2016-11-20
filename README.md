@@ -1,2 +1,2 @@
-# JS-Engine
+# MikeJS
 A JavaScript game engine.
