@@ -14,13 +14,15 @@ function Colour(_r, _g, _b, _a) {
     }
 
     this.SetColour = function(rVal, gVal, bVal, aVal) {
-        this.r = Number(Mathf.Bounce(rVal, 0, 255).toString());
-        this.g = Number(Mathf.Bounce(gVal, 0, 255).toString());
-        this.b = Number(Mathf.Bounce(brVal, 0, 255).toString());
-        this.a = Number(Mathf.Bounce(aVal, 0, 255).toString());
+        this.r = Number(Mathf.Bounce(rVal, 0, 255));
+        this.g = Number(Mathf.Bounce(gVal, 0, 255));
+        this.b = Number(Mathf.Bounce(bVal, 0, 255));
+        this.a = Number(Mathf.Bounce(aVal, 0, 255));
     }
     
     this.GetColour = function() {
-        return String("rgba(" + (Mathf.Bounce(_r, 0, 255)).toString() + ", " + (Mathf.Bounce(_g, 0, 255)).toString() + ", " + (Mathf.Bounce(_b, 0, 255)).toString() + ", " + (Mathf.Bounce(_a, 0, 255)).toString() + ")");  
+        return String("rgba(" + (Mathf.Bounce(this.r, 0, 255)).toString() + ", " + (Mathf.Bounce(this.g, 0, 255)).toString() + ", " + (Mathf.Bounce(this.b, 0, 255)).toString() + ", " + (Mathf.Bounce(this.a, 0, 255)).toString() + ")");  
     }
 }
+
+Colour.Random = new Colour(RandomNumber(0, 256), RandomNumber(0, 256), RandomNumber(0, 256), 1);

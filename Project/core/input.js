@@ -13,7 +13,7 @@ var Input = {
     },
     OnKeyDown: function(key) {
         if(key.target === document.body) {
-            //key.preventDefault();
+            key.preventDefault();
             Input.Keys[key.keyCode] = true;
         }
     },

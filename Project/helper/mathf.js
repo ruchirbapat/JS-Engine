@@ -9,12 +9,12 @@ var Mathf =
 	*/
 
 	/* ----- Constant values ----- */
-    pi : 3.1415926, //The circumference to the perimeter of a circle
-    tau : 6.2831852, //Double 'pi'
-    rounding : 0.005, //Temp
-    infinite : Infinity, //Like: HUGE_VALF
-    degToRad : (3.1415926 * 2) / 360, //For converting degrees to radians
-    radToDeg : 360 / (3.1415926 * 2), //For converting radians to degrees
+    PI : 3.1415926, //The circumference to the perimeter of a circle
+    Double_PI : 6.2831852, //Double 'pi'
+    Rounding : 0.005, //Temp
+    Infinity : Infinity, //Like: HUGE_VALF
+    DegToRad : (3.1415926 * 2) / 360, //For converting degrees to radians
+    RadToDeg : 360 / (3.1415926 * 2), //For converting radians to degrees
 
 	/* ----- Wrapper functions ----- */
 
@@ -202,4 +202,18 @@ var Mathf =
 	//Because of slight round errors in floats, this should be used when comparing
     Approximatly : function(a, b, round = Mathf.rounding) 
     { return Mathf.Abs(a - b) < round; }
+};
+
+//For easy random number generation
+var Random =
+{
+	//Random number between min and max
+    Range : function(min, max) { return (Math.random() * (max - min)) + min; },
+	
+	//Generates a random number between 0 and 1
+    Value : function() { return Math.random(); },
+
+	//Generate a random integer 
+    Int : function(min, max) { return Mathf.Round(Rand.Range(min, max)); },
+    Binary : function() { return Rand.RandInt(0, 2); }
 };

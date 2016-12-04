@@ -9,7 +9,7 @@ function Vector2(x, y)
     this.ArrayRef = function(index) { return (index == 0)? this.x : this.y; }
     this.Magnitude = function() { return Mathf.Sqrt((this.x * this.x) + (this.y * this.y)); }
     this.SqrMagnitude = function() { return (this.x * this.x) + (this.y * this.y); }
-    this.Normalize = function()
+    /*this.Normalize = function()
     {
         var result = new Vector2(0, 0);
         var mag = this.Magnitude();
@@ -20,12 +20,31 @@ function Vector2(x, y)
 
         //Done
         return result;
+    }*/
+    this.Normalise = function() {
+        x /= mag;
+        y /= mag;
+    }
+    
+    this.GetNormalized = function() { 
+        return new Vector2(x / mag, y / mag);
     }
 
     //Make sure that a pointer is not returned
     this.Clone = function() { return new Vector2(this.x, this.y); }
     this.ToString = function() {
         return "(" + this.x + ", " + this.y + ")";
+    }
+    
+    //Projection
+    this.ProjectOntoAxis = function(axis) {
+        return Vector2.Dot(this, axis.Normalise());
+    }
+    
+    //Scaling
+    this.Multiply = function(scalar) {
+        this.x *= scalar;
+        this.y *= scalar;
     }
 }
 
@@ -55,12 +74,19 @@ Vector2.Max = function(l, r) { return new Vector2((l.x > r.x) ? l.x : r.x, (l.y 
 Vector2.Min = function(l, r) { return new Vector2((l.x < r.x) ? l.x : r.x, (l.y < r.y) ? l.y : r.y); }
 Vector2.MoveTowards = function(c, t, d) { return new Vector2(Mathf.MoveTowards(c.x, t.x, d), Mathf.MoveTowards(c.y, t.y, d)); }
 
+//This will return the vector projection of a onto b
+Vector2.Project = function(a, b) {
+    var retVec = new Vector2(a.x * b.x, a.y * b.y);
+    rectVec.Multiply(Vector2.Dot(a, b) / Vector2.Dot(a, b));
+    return retVec;
+}
+
 //This will find the reflection of a vector based on a normal provided:
 // V   N   R
 //  \  |  /
 //   \ | /
 //    \|/
-//  -------
+// ---------
 // V = The input (of velocity) vector
 // N = The normal (needs to be a unit vector)
 // R = Result of the function

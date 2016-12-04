@@ -3,15 +3,6 @@
 *   The code is licensed under: Apache 2.0
 */
 
-//Create Renderer
-var Screen = new Renderer();
-
-//Make sure the Renderer was created
-Check(Screen);
-
-//Set the canvas colour
-Screen.SetBackgroundColour(new Colour(240, 240, 240, 1));
-
 //Create a new Player
 var Player = new Player(new Vector2(Screen.Width / 2, Screen.Height / 2), new Vector2(40, 40), new Colour(108, 218, 218, 1));
 
@@ -31,7 +22,7 @@ const GRAVITY = 0.984; //Strength of gravitational on each object
 const JUMP_VELOCITY = -15.5; //Strength of Player's jump
 const SPEED = 1.25; //Speed the Player moves at
 const ACCELERATION = 1; //Acceleration acting as a scalar
-const SMOOTHNESS = 0.95; //For gliding effect
+const SMOOTHNESS = 0.85; //For gliding effect
 const BOUNCE = 0; //Not used yet
 const NODE = 20; //The size of the nodes
 const columns = Math.floor(Screen.Width / NODE); //The number of columns in the level
@@ -42,12 +33,12 @@ var level = new Array(columns); //Holds the level data
 for(var i = 0; i < level.length; i++)
     level[i] = new Array(rows); //Create 2D array for node positions in the level
 
-//Fill a percentage of the level with a 'true' value, meaning a node shall be placed there
+/*//Fill a percentage of the level with a 'true' value, meaning a node shall be placed there
 //Loop through level
 for(var x = 0; x < columns; x++) {
     for(var y = 0; y < rows; y++) {
         //Generate a random number and set value to true if is greater than the fill percentage
-        if(RandomNumber(0, 101) < fillPercent) {
+        if((x == 0) || (y == 0) || (x == columns) || (y == rows) || (Random.Range(0, 100) < fillPercent)) {
             level[x][y] = true;
         } else {
             level[x][y] = false;
@@ -55,36 +46,37 @@ for(var x = 0; x < columns; x++) {
     }
 }
 
-//Print the values at every node in the level
-//Loop through level
-for(var x = 0; x < columns; x++) {
-    for(var y = 0; y < rows; y++) {
-        //Print value
-        console.log("Value at: (" + x + ", " + y + ") is: " + level[x][y]);
-    }
-}
-
-//Delete objects that are not on the Canvas
-for(var i = 0; i < collidable.length; i++) {
-    if((collidable[i].transform.position.x > Screen.Width) || (collidable[i].transform.position.y > Screen.Height) || (collidable[i].transform.position.x < 0) || (collidable[i].transform.position.y < 0)) {
-        collidable[i] = null;
-        delete collidable[i];
-    }
-}
-
-//Create a Box for every 'true' node, find it' Quad and add it to the collidable ArrayList
+//Create a Box for every 'true' node, find its Quad and add it to the collidable ArrayList
 for(var x = 0; x < columns; x++) {
     for(var y = 0; y < rows; y++) {
         if(level[x][y] === true) {
             var tempBox = new Box(new Vector2((x * columns), (y * rows)), new Vector2(NODE, NODE), new Colour(222, 118, 149, 1));
-            tempBox.quad = tempBox.GetQuad();
-            collidable.push(tempBox);
+            var tempBoxQuad = tempBox.GetQuad();
+            if(tempBoxQuad == "TL") { QuadTreeSolver.ObjectsInTopLeft.push(tempBox); }
+            if(tempBoxQuad == "TR") { QuadTreeSolver.ObjectsInTopRight.push(tempBox); }
+            if(tempBoxQuad == "BL") { QuadTreeSolver.ObjectsInBottomLeft.push(tempBox); }
+            if(tempBoxQuad == "BR") { QuadTreeSolver.ObjectsInBottomLeft.push(tempBox); }
+            
+            
+            if(!((tempBox.transform.position.x < 0) || (tempBox.transform.position.y < 0) || (tempBox.transform.position.x > Screen.Width) || (tempBox.transform.position.y > Screen.Height) || ((tempBox.transform.position.x + tempBox.transform.scale.x) > Screen.Width) || ((tempBox.transform.position.y + tempBox.transform.scale.y) > Screen.Height))) {
+                collidable.push(tempBox);   
+            } else {
+                delete tempBox;
+                if(tempBox != null)
+                tempBox = null;
+            }
         }
     }
-}
+}*/
+
+
+//document.write(SaveLevel(level));
+console.log(LevelToString(level));
 //Message informing that the variables are all set
 console.log("Variables set.");
 
+var testNum = 5;
+console.log(Mathf.Bounce(testNum, 0, 255));
 
 //Request animation frame
 RequestAnimationFrame();

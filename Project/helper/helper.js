@@ -3,6 +3,57 @@
 *   The code is licensed under: Apache 2.0
 */
 
+//Saves level to file
+function SaveLevel(theLevel) {
+    var levelString = "";
+    for(var x = 0; x < theLevel.length; x++) {
+        for(var y = 0; y < theLevel[0].length; y++) {
+            if(theLevel[x][y] == true) {
+                levelString += "1";
+            } else { 
+                levelString += "0";
+            }
+        }
+    }
+    
+    return levelString;
+}
+
+function LevelToString(lev) {
+    var col = lev.length;
+    var row = lev[0].length;
+    var levStr = "";
+    console.log("LevelToString(): lev has " + col + " columns and " + row + " rows.");
+    levStr = "c" + col + "r" + row;
+    for(var x = 0; x < col; x++) {
+        for(var y = 0; y < row; y++) {
+            if(lev[x][y] === true) { 
+                levStr += "1";
+            } else if(lev[x][y] === false) {
+                levStr += "0";
+            } else {
+                levStr += "n";
+            }
+        }
+    }
+    return levStr;
+}
+
+function ReadLevel(levelString) {
+    //levelString.split("");
+    var levelAsArray = levelString.split("");
+    var levelArray = [];
+    for(var i = 0; i < levelString.length; i++) {
+        if(levelString[i] == 1) {
+            levelString[i] = true;
+        } else {
+            levelString[i] = false;
+        }
+    }
+    
+    return levelString; 
+}
+
 //Makes inheritance easier
 Function.prototype.inheritsFrom = function( parentClassOrObject ){
 	if (parentClassOrObject.constructor === Function )
@@ -59,7 +110,7 @@ function Check(object) {
 
 //For checking box-to-box collisions and returns the direction of the collision
 var CollisionChecker = {
- QuickTest: function(boxA, boxB) {
+ QuickBoxToBox: function(boxA, boxB) {
      if(boxA.GetX() < boxB.GetX() + boxB.GetWidth() && boxA.GetX() + boxA.GetWidth() > boxB.GetX() && boxA.GetY() < boxB.GetY() + boxB.GetHeight() && boxA.GetHeight + boxA.GetY() > boxB.GetY()) {
          return true;
      }
@@ -68,7 +119,7 @@ var CollisionChecker = {
  },
 
  //Credit to Obtuse Studios for this collision detection algorithm
- CollisionTest: function(aPos, aSize, bPos, bSize) {
+ BoxToBox: function(aPos, aSize, bPos, bSize) {
 	 //Find the collision vectors
      var vectorX = (aPos.x + (aSize.x / 2)) - (bPos.x + (bSize.x / 2));
      var vectorY = (aPos.y + (aSize.y / 2)) - (bPos.y + (bSize.y / 2));
@@ -117,7 +168,39 @@ var CollisionChecker = {
 
      //Return the direction.
      return collisionDir;
-	}
+	},
+    
+    CircleToCircle: function(c1, c2) {
+        if(Mathf.Sqrt(((Mathf.Pow((c1.transform.position.x - c2.transform.position.x) , 2)) + (Mathf.Pow((c2.transform.position.y - c2.transform.position.y) , 2)))) <= c1.radius + c2.radius) { 
+            return true;
+        } else { 
+            return false;
+        }
+    },
+    
+    CircleToBox: function(c, b) {
+        var testX = c.transform.position.x;
+        var testY = c.transform.position.y;
+
+        if (c.transform.position.x < r.transform.position.x)
+            testX = r.transform.position.x;
+        else if (c.transform.position.x > r.transform.position.x + r.transform.scale.x)
+            testX = r.transform.position.x + r.transform.scale.x;
+
+        if (c.transform.position.y < r.transform.position.y)
+            testY = r.transform.position.y;
+        else if (c.transform.position.y > r.transform.position.y + r.transform.scale.y)
+            testY = r.transform.position.y + r.transform.scale.y;
+
+        if (Mathf.Sqrt(((Mathf.Pow((c.transform.position.x - testX) , 2)) + (Mathf.Pow((c.transform.position.y - testY) , 2)))) <= c.radius) {
+            return true;
+        }
+        return false;
+    },
+
+    BoxToCircle: function(b, c) {
+        CollisionChecker.CircleToBox(c, b);
+    }
 }
 
 //Returns a random value between min and max

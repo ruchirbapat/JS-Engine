@@ -3,7 +3,7 @@
 *   The code is licensed under: Apache 2.0
 */
 
-//Platformer Game
+/*//Platformer Game
 //Called every frame
 function Update() {
     //Clear screen
@@ -11,31 +11,35 @@ function Update() {
     
     //Draw floor
     //Screen.DrawRect(TestBox.transform.position, TestBox.transform.scale, TestBox.colour);
-    
+    Screen.DrawRect(TestBox);
     for(var i = 0; i < collidable.length; i++) {
-        Screen.DrawRect(collidable[i].transform.position, collidable[i].transform.scale, collidable[i].colour);
+        Screen.DrawRect(collidable[i]);
     }
     
     //Move Player
-    Player.SelfMove();
+    Player.Update();
 
     //Collide Player against floor
-    //Player.CollideWith(TestBox);
+    Player.CollideWith(TestBox);
     
     //Loop through every collidable object, then only perform a collision test against objects that are in the same Quad as the Player
     for(var i = 0; i < collidable.length; i++) {
         //Check if the object shares the same Quad as the Player
-        if(Player.GetQuad() == collidable[i].GetQuad()) {
+        //if(Player.GetQuad() == collidable[i].GetQuad()) {
             //Perform a collision test
             Player.CollideWith(collidable[i]);
-        }
+        //}
     }
     
+    Player.colour.r = Mathf.Bounce(Player.colour.r, 0, 255);
+    Player.colour.g = Mathf.Bounce(Player.colour.g, 0, 255);
+    Player.colour.b = Mathf.Bounce(Player.colour.b, 0, 255);
+    
     //Draw Player
-    Screen.DrawRect(Player.transform.position, Player.transform.scale, Player.colour);
-}
+    Screen.DrawRect(Player);
+}*/
 
-/* //Neural Network Example
+/*//Neural Network Example
 var neuron = new Neuron(3);
 var training = new Array(2000);
 var count = 0;
@@ -70,3 +74,26 @@ function Update() {
         }   
     }
 }*/
+
+/*var c = new Circle(new Vector2(0, 300), 10, new Colour(RandomNumber(1, 255), RandomNumber(1, 255), RandomNumber(1, 255), 1));
+console.log(c);
+function Update() {
+    c.transform.position.x += 12.25;
+    c.transform.position.y += Mathf.Sin(c.transform.position.x) * 25;
+    c.Draw();
+}*/
+
+var c = new Circle(new Vector2(300, 10), 10, Colour.Random);
+var r = new Box(new Vector2(0, Screen.Height), new Vector2(Screen.Width, 40), new Colour(222, 118, 149, 1));
+var l = new Line(Vector2.zero, new Vector2(Screen.Width, Screen.Height), Colour.Random);
+console.log(l);
+function Update() {
+    Screen.Clear();
+    c.transform.position.y += 10;
+    if(CollisionChecker.CircleToBox(c, r)) {
+        console.log("Collision!");
+    }
+    Screen.DrawRect(r);
+    c.Draw()
+    l.Draw();
+}

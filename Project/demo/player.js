@@ -29,6 +29,8 @@ function Player(start, size, colour) {
     this.grounded = true;
     //Holds a Colour, namely, the colour of the Player
     this.colour = colour;
+    //Holds all attached Components
+    this.Components = [];
 
     //Prints the values of the Player to the Console
     this.Print = function() {
@@ -39,8 +41,8 @@ function Player(start, size, colour) {
         console.log("Player's Center: " + this.transform.center.ToString());
     }
     
-    //Handy method for calculating and applyin velocity and position changes based off Input values
-    this.SelfMove = function() {
+    //Player Specific Update Routine
+    this.Update = function() {
         //Calculate player's velocity per frame based off Input
         //Decrease velocity on the y-Axis (jump)
         //Check for jump button keypress
@@ -91,7 +93,7 @@ function Player(start, size, colour) {
         }
 
         //Update y-velocity and the jumping and grounded booleans if the direction was below, or if the Player hit the Canvas bottom bound
-        if(dir === "b" || ((this.transform.position.y + this.transform.scale.y) === Screen.Height)) {
+        if(dir === "b" || ((Screen.Height - this.transform.scale.y) == this.transform.position.y)) {
             this.velocity.y = 0;
             this.grounded = true;
             this.jumping = false;
@@ -120,4 +122,11 @@ function Player(start, size, colour) {
             return "NONE";
         }
     }
+    
+    //Returns an attached Component
+    //@param comp - The wanted Component
+    this.GetComponent = function(comp) {
+        return this.Components[comp];
+    }
+
 }

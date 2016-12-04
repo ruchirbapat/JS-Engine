@@ -47,4 +47,14 @@ function Box(start, size, colour) {
             return "NONE";
         }
     }
+    
+    //Rotates the object around center point by a given number of degrees
+    //@param degreesToRotate - The number of degrees to rotate
+    this.Rotate = function(degreesToRotate) {
+        //Set rotation point to center of the box
+        Screen.Context.translate((this.transform.position.x + this.transform.scale.x) / 2, (this.transform.position.y + this.transform.scale.y) / 2);
+        
+        //Rotate by degreesToRotate
+        Screen.Context.rotate(degreesToRotate * Math.PI / 180);
+    }
 }

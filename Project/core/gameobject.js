@@ -4,7 +4,17 @@
 */
 
 //Constructor for a GameObject
-function GameObject(_n) {
-    this.name = ("Untitled GameObject");
+function GameObject() {
+    
+    this.Components = [];
+    this.Name = ("Untitled GameObject");
     this.transform = new Transform();
+    
+    this.GetComponent = function(component) {
+        return this.Components[component];
+    }
+    
+    this.AddComponent = function(component) {
+    
+    }
 }

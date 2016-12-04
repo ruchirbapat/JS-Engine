@@ -14,9 +14,9 @@
 
 h1 {
     text-align: center;
-    margin-top: auto;
+    margin-top: 0px;
     color:rgb(255, 108, 108);
-    font-family: "Montserrat";
-    font-size: 100px;
+    font-family: "Roboto";
+    font-size: 10.25vh;
     font-weight: lighter;
 }
