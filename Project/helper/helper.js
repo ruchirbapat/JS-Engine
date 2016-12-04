@@ -171,7 +171,7 @@ var CollisionChecker = {
 	},
     
     CircleToCircle: function(c1, c2) {
-        if(Mathf.Sqrt(((Mathf.Pow((c1.transform.position.x - c2.transform.position.x) , 2)) + (Mathf.Pow((c2.transform.position.y - c2.transform.position.y) , 2)))) <= c1.radius + c2.radius) { 
+        if(Mathf.Sqrt(((Mathf.Pow((c1.transform.position.x - c2.transform.position.x) , 2)) + (Mathf.Pow((c1.transform.position.y - c2.transform.position.y) , 2)))) <= c1.radius + c2.radius) { 
             return true;
         } else { 
             return false;
@@ -200,12 +200,94 @@ var CollisionChecker = {
 
     BoxToCircle: function(b, c) {
         CollisionChecker.CircleToBox(c, b);
+    },
+
+    CircleToLine: function(c, l) {
+        var projected = Vector2.Project(new Vector2((c.transform.position.x - l.start.x), (c.transform.position.y - l.start.y)), new Vector2((l.end.x - l.start.x), (l.end.y - l.start.y)));
+
+        if(Mathf.Sqrt(((Mathf.Pow((projected.x - c.transform.position.x) , 2)) + (Mathf.Pow((projected.y - c.transform.position.y) , 2)))) <= c.radius) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    CircleToPoint: function(c, p) {
+        if(Distance(c.transform.position, p) <= c.radius) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    PointToCircle: function(p, c) {
+        CollisionChecker.CircleToPoint(c, p);
+    },
+
+    PointToRect: function(p, r) {
+        if(p.x >= r.transform.position.x && p.x <= r.transform.position.x + r.transform.scale.y && p.y >= r.transform.position.y && p.y <= r.transform.positiony + r.transform.scale.y) {
+            return true;
+        } else {
+            return false;
+        }
+    }, 
+
+    RectToPoint: function(r, p) {
+        CollisionChecker.PointToRect(p, r);
+    },
+
+    LineToLine: function(l1, l2) {
+        var gradient1 = ((l1.start.y - l1.end.y) / (l1.start.x - l1.end.x));
+        var gradient2 = ((l1.start.y - l1.end.y) / (l1.start.x - l1.end.x));
+
+        var intersection;
+
+        // calculate the distance to intersection point
+        var uA = ((l2.end.x-l2.start.x)*(l1.start.y-l2.start.y) - (l2.end.y-l2.start.y)*(l1.start.x-l2.start.x)) / ((l2.end.y-l2.start.y)*(l1.end.x-l1.start.x) - (l2.end.x-l2.start.x)*(l1.end.y-l1.start.y));
+        var uB = ((l1.end.x-l1.start.x)*(l1.start.y-l2.start.y) - (l1.end.y-l1.start.y)*(l1.start.x-l2.start.x)) / ((l2.end.y-l2.start.y)*(l1.end.x-l1.start.x) - (l2.end.x-l2.start.x)*(l1.end.y-l1.start.y));
+
+        // if uA and uB are between 0-1, lines are colliding
+        if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+
+        if(_collideDebug || calcIntersection){
+                // calc the point where the lines meet
+                var intersectionX = l1.start.x + (uA * (l1.end.x-l1.start.x));
+                var intersectionY = l1.start.y + (uA * (l1.end.y-l1.start.y));
+            }
+
+            if(_collideDebug){
+                ellipse(intersectionX,intersectionY,10,10);
+            }
+
+            if(calcIntersection){
+                intersection = {
+                "x":intersectionX,
+                "y":intersectionY
+                }
+                return intersection;
+            }else{
+                return true;
+            }
+        }
+        if(calcIntersection){
+        intersection = {
+            "x":false,
+            "y":false
+        }
+        return intersection;
+        }
+        return false;
     }
 }
 
 //Returns a random value between min and max
 function RandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+//Gets the distance between two points
+function Distance(a, b) {
+    return Mathf.Sqrt(((Mathf.Pow((a.x - b.x) , 2)) + (Mathf.Pow((a.y - b.y) , 2))))
 }
 
 //Requests animation frame for the Canvas

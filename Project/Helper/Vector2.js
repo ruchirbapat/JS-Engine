@@ -4,7 +4,7 @@ function Vector2(x, y)
     //This is a 2D Engine
     this.x = x;
     this.y = y;
-    
+
     //Public functions
     this.ArrayRef = function(index) { return (index == 0)? this.x : this.y; }
     this.Magnitude = function() { return Mathf.Sqrt((this.x * this.x) + (this.y * this.y)); }
@@ -22,8 +22,8 @@ function Vector2(x, y)
         return result;
     }*/
     this.Normalise = function() {
-        x /= mag;
-        y /= mag;
+        this.x /= this.Magnitude();
+        this.y /= this.Magnitude();
     }
     
     this.GetNormalized = function() { 
@@ -76,11 +76,12 @@ Vector2.MoveTowards = function(c, t, d) { return new Vector2(Mathf.MoveTowards(c
 
 //This will return the vector projection of a onto b
 Vector2.Project = function(a, b) {
-    var retVec = new Vector2(a.x * b.x, a.y * b.y);
-    rectVec.Multiply(Vector2.Dot(a, b) / Vector2.Dot(a, b));
-    return retVec;
+    var dotProduct = Vector2.Dot(a, b);
+    
+    var bMag = b.Magnitude() * b.Magnitude();
+    
+    return new Vector2(((dotProduct * b.x) / bMag), ((dotProduct * b.y) / bMag));
 }
-
 //This will find the reflection of a vector based on a normal provided:
 // V   N   R
 //  \  |  /
@@ -100,7 +101,7 @@ Vector2.Reflect = function(velocity, normal)
 
 //Helpful static functions
 Vector2.RoundInt = function(vec) { return new Vector2(vec.x, vec.y); }
-Vector2.Random = function() { return new Vector2(Rand.Value(), Rand.Value()); }
+Vector2.Random = function() { return new Vector2(Random.Range(100, 500), Random.Range(100, 500)); }
 
 //Operator overloading, kinda
 Vector2.AddOperator = function(result, val) { return result += val; }

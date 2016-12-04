@@ -83,17 +83,29 @@ function Update() {
     c.Draw();
 }*/
 
-var c = new Circle(new Vector2(300, 10), 10, Colour.Random);
+var c = new Circle(new Vector2(300, 10), 10, Colour.Random());
 var r = new Box(new Vector2(0, Screen.Height), new Vector2(Screen.Width, 40), new Colour(222, 118, 149, 1));
-var l = new Line(Vector2.zero, new Vector2(Screen.Width, Screen.Height), Colour.Random);
+var l = new Line(Vector2.zero, new Vector2(Screen.Width, Screen.Height), Colour.Random());
+var anotherLine = new Line(new Vector2(Screen.Width, 0), new Vector2(0, Screen.Height), Colour.Random());
+
+var vecA = new Vector2(328, 311);
+var vecB = new Vector2(169, 315);
+var projected = Vector2.Project(vecA, vecB);
+console.log("Projected: " + projected.ToString());
+
 console.log(l);
+console.log(anotherLine);
+Check(anotherLine);
 function Update() {
     Screen.Clear();
     c.transform.position.y += 10;
-    if(CollisionChecker.CircleToBox(c, r)) {
+    
+    if(CollisionChecker.CircleToLine(c, l)) {
         console.log("Collision!");
     }
+    
     Screen.DrawRect(r);
     c.Draw()
     l.Draw();
+    anotherLine.Draw();
 }

@@ -25,4 +25,6 @@ function Colour(_r, _g, _b, _a) {
     }
 }
 
-Colour.Random = new Colour(RandomNumber(0, 256), RandomNumber(0, 256), RandomNumber(0, 256), 1);
+Colour.Random = function() {
+    return new Colour(RandomNumber(0, 256), RandomNumber(0, 256), RandomNumber(0, 256), 1);
+}
