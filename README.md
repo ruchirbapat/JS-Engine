@@ -1,2 +1,2 @@
 # MikeJS
-A JavaScript game engine.
+A JavaScript game engine that is no longer under development.
